@@ -1,88 +1,27 @@
-"use client";
+'use client'
+import Link from 'next/link'
+import { useState } from 'react'
 
-import { Disclosure } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
-import AlertsButton from "./alerts/AlertsButton";
-import dynamic from "next/dynamic";
-const AuthenticationNavigation = dynamic(
-  () => import("./authentication/AuthenticationNavigation"),
-  { ssr: false },
-);
-
-const navigation = [
-  { name: "About", to: "/about" },
-  { name: "Authentication", to: "/authentication" },
-  { name: "Blog", to: "/blog" },
-];
-
-const renderIcon = (open: boolean) => {
-  if (!open) {
-    return <Bars3Icon className="block h-6 w-6" aria-hidden="true" />;
-  } else {
-    return <XMarkIcon className="block h-6 w-6" aria-hidden="true" />;
-  }
-};
-
-const renderNavLinks = (style: string) => {
-  return navigation.map((nav) => (
-    <Link href={nav.to} key={nav.name} className={style}>
-      {nav.name}
-    </Link>
-  ));
-};
 export default function Navigation() {
   return (
-    <header>
-      <Disclosure as="nav">
-        {({ open }) => (
-          <>
-            <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-              <div className="relative flex h-16 justify-between">
-                <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                  {/* Mobile menu button */}
-                  <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-rose-500">
-                    <span className="sr-only">Open main menu</span>
-                    {renderIcon(open)}
-                  </Disclosure.Button>
-                </div>
-                <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                  <div className="flex flex-shrink-0 items-center">
-                    <Link href="/" className="flex flex-shrink-0 items-center">
-                      <img
-                        className="block h-8 w-auto lg:hidden"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=rose&shade=600"
-                        alt="Your Company"
-                      />
-                      <img
-                        className="hidden h-8 w-auto lg:block"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=rose&shade=600"
-                        alt="Your Company"
-                      />
-                    </Link>
-                  </div>
-                  <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                    {renderNavLinks(
-                      "inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-rose-500",
-                    )}
-                  </div>
-                </div>
-                <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                  <AlertsButton />
-                  <AuthenticationNavigation />
-                </div>
-              </div>
-            </div>
-            <Disclosure.Panel className="sm:hidden">
-              <div className="space-y-1 pt-2 pb-4">
-                {renderNavLinks(
-                  "block hover:border-l-4 hover:border-rose-500 hover:bg-rose-50 py-2 pl-3 pr-4 text-base font-medium text-rose-700",
-                )}
-              </div>
-            </Disclosure.Panel>
-          </>
-        )}
-      </Disclosure>
-    </header>
-  );
+    <nav className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="flex items-center gap-8">
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-black group-hover:scale-110 transition shadow-[0_0_15px_rgba(79,70,229,0.5)]">P</div>
+            <span className="text-xl font-bold tracking-tight text-slate-100">Pulse<span className="text-indigo-400">Stack</span></span>
+          </Link>
+          <div className="hidden md:flex gap-6 text-sm font-medium text-slate-400">
+            <Link href="/" className="hover:text-white transition">Insights</Link>
+            <Link href="/" className="hover:text-white transition">Community</Link>
+            <Link href="/" className="hover:text-white transition">Challenges</Link>
+          </div>
+        </div>
+        <div className="flex items-center gap-4">
+           <Link href="/login" className="text-sm font-semibold hover:text-indigo-400 transition">Login</Link>
+           <Link href="/login" className="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-bold transition">Get Started</Link>
+        </div>
+      </div>
+    </nav>
+  )
 }
