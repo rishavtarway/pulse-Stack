@@ -116,4 +116,4 @@ src_paths = ["app", "tests"]
 files = ["**/*.py"]
 plugins = "pydantic.mypy"
 show_error_codes = true
-strict = true
+strict = true# Deploy ID: 1773909820
