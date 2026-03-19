@@ -2,12 +2,9 @@ from typing import Optional
 from motor.motor_asyncio import AsyncIOMotorClient
 from app.core.config import settings
 import logging
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
 client: Optional[AsyncIOMotorClient] = None
-
 def get_client() -> AsyncIOMotorClient:
     global client
     if client is None:
@@ -20,14 +17,11 @@ def get_client() -> AsyncIOMotorClient:
             uuidRepresentation="standard"
         )
     return client
-
-# This is what initial_data.py was looking for
 def get_engine() -> AsyncIOMotorClient:
     return get_client()
-
-# Re-adding MongoDatabase for the migration script
+# Re-creating the objects needed for migrations
+# We initialize them only on the first import of this module
 mongo_client = get_client()
 MongoDatabase = mongo_client[settings.MONGO_DATABASE]
-
-async def ping():
-    await get_client().admin.command("ping")
+# This alias helps during the pre-start checks
+mongo_db = MongoDatabase
