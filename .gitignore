@@ -1,0 +1,14 @@
+.vscode
+.mypy_cache
+docker-stack.yml
+*.txt
+.env
+*.code-workspace
+.s3cfg
+
+.DS_Storenode_modules
+.next
+.env
+__pycache__
+.venv
+*.pyc
