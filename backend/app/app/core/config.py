@@ -11,20 +11,20 @@ class Settings(BaseSettings):
     SERVER_NAME: str = "PulseStack"
     SERVER_HOST: AnyHttpUrl = "https://pulse-stack.onrender.com"
     
-    # Mongo Settings
-    MONGO_DATABASE_URI: str = "mongodb+srv://Rishav:Rishav21@@cluster0.f6tseh9.mongodb.net/?appName=Cluster0"
+    # These must be set in Render environment variables
+    # MONGO_DATABASE_URI, MONGO_DATABASE, etc.
+    MONGO_DATABASE_URI: str = "mongodb://localhost:27017" # Default for local
     MONGO_DATABASE: str = "pulsestack_db"
     
-    # Security
     SECRET_KEY: str = "b47fefafd0ec5d1c9faf3571832023f4"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
+    TOTP_SECRET_KEY: str = "87eb2e3130c0c66048d087b21e8e5d1c"
+    TOTP_ALGO: str = "sha256"
     
-    # Registration & Auth
     USERS_OPEN_REGISTRATION: bool = True
     FIRST_SUPERUSER: EmailStr = "admin@pulsestack.com"
     FIRST_SUPERUSER_PASSWORD: str = "PulseStackAdmin123"
     
-    # CORS
     BACKEND_CORS_ORIGINS: List[str] = [
         "https://pulse-stack.onrender.com",
         "http://localhost:3000",
@@ -39,7 +39,6 @@ class Settings(BaseSettings):
             return v
         return v
 
-    # SMTP Settings (Optional for now to prevent crashes)
     EMAILS_ENABLED: bool = False
     SMTP_TLS: bool = True
     SMTP_PORT: Optional[int] = None
