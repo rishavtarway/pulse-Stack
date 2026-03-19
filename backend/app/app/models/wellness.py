@@ -19,7 +19,7 @@ class WellnessChallenge(Base):
 
 class ActivityLog(Base):
     user_id: ObjectId
-    activity_type: str = Field(pattern="^(walk|run|yoga|cycling)$")
+    activity_type: str = Field(regex="^(walk|run|yoga|cycling)$")
     value: float  # e.g., steps or minutes
     date: datetime = Field(default_factory=datetime_now_sec)
     created: datetime = Field(default_factory=datetime_now_sec)
