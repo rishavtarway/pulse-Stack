@@ -11,14 +11,19 @@ def get_client() -> AsyncIOMotorClient:
     if client is None:
         uri = str(settings.MONGO_DATABASE_URI)
         
-        # Aggressive Regex to catch and escape password
-        # This handles passwords with @, :, or / seamlessly
-        match = re.search(r'^(mongodb(?:\+srv)?://)([^:]+):(.+)(@.+)$', uri)
-        if match:
-            prefix, user, password, suffix = match.groups()
-            safe_user = urllib.parse.quote_plus(user)
-            safe_password = urllib.parse.quote_plus(password)
-            uri = f"{prefix}{safe_user}:{safe_password}{suffix}"
+        # Robust URI escaping: find the last '@' as the separator
+        try:
+            if "://" in uri and "@" in uri:
+                scheme, rest = uri.split("://", 1)
+                auth, host = rest.rsplit("@", 1)
+                if ":" in auth:
+                    user, password = auth.split(":", 1)
+                    # Use quote_plus for password instead of raw password to handle special chars like '@'
+                    safe_user = urllib.parse.quote_plus(user)
+                    safe_password = urllib.parse.quote_plus(password)
+                    uri = f"{scheme}://{safe_user}:{safe_password}@{host}"
+        except Exception:
+            pass # Fallback to original URI if something goes wrong
             
         client = AsyncIOMotorClient(
             uri,

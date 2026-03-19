@@ -1,8 +1,6 @@
 from typing import List, Union, Optional
 from pydantic import AnyHttpUrl, EmailStr, validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
-import urllib.parse
-import re
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -16,25 +14,6 @@ class Settings(BaseSettings):
     # Raw MongoDB URI from environment
     MONGO_DATABASE_URI: str = "mongodb://localhost:27017"
     MONGO_DATABASE: str = "pulsestack_db"
-
-    @validator("MONGO_DATABASE_URI", pre=True)
-    def escape_password_in_uri(cls, v: str) -> str:
-        """Robustly escape the password in a MongoDB URI."""
-        if not v or "mongodb" not in v:
-            return v
-        try:
-            # Matches mongodb+srv://user:password@host...
-            # This regex captures the password specifically to escape it.
-            match = re.search(r'^(mongodb(?:\+srv)?://)([^:]+):(.+)(@.+)$', v)
-            if match:
-                prefix, user, password, suffix = match.groups()
-                # Quote the user and password using RFC 3986
-                safe_user = urllib.parse.quote_plus(user)
-                safe_password = urllib.parse.quote_plus(password)
-                return f"{prefix}{safe_user}:{safe_password}{suffix}"
-            return v
-        except Exception:
-            return v
 
     SECRET_KEY: str = "b47fefafd0ec5d1c9faf3571832023f4"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
