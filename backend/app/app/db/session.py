@@ -21,11 +21,13 @@ def get_client() -> AsyncIOMotorClient:
         )
     return client
 
-# This is the function the app was looking for
+# This is what initial_data.py was looking for
 def get_engine() -> AsyncIOMotorClient:
     return get_client()
 
+# Re-adding MongoDatabase for the migration script
+mongo_client = get_client()
+MongoDatabase = mongo_client[settings.MONGO_DATABASE]
+
 async def ping():
     await get_client().admin.command("ping")
-
-mongo_client = get_client()
