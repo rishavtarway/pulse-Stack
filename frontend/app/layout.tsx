@@ -2,15 +2,13 @@ import './assets/css/main.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Navigation from './components/Navigation'
-import Providers from './components/Provider' // Adjusting to the common template path
-
+// Trying the most common locations for the provider
+import { Providers } from './providers' 
 const inter = Inter({ subsets: ['latin'] })
-
 export const metadata: Metadata = {
   title: 'PulseStack | Enterprise Wellness Intelligence',
   description: 'Predictive analytics for modern teams and employee engagement.',
 }
-
 export default function RootLayout({
   children,
 }: {
