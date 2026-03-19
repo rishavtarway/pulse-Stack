@@ -7,13 +7,12 @@ client: Optional[AsyncIOMotorClient] = None
 def get_client() -> AsyncIOMotorClient:
     global client
     if client is None:
-        # We connect using components to avoid the URI parsing bug on Render
+        uri = str(settings.MONGO_DATABASE_URI)
+        # We use the full URI string as provided by Atlas
         client = AsyncIOMotorClient(
-            host="cluster0.f6tseh9.mongodb.net",
-            username="Rishav",
-            password="Rishav2005", # Using your updated clean password
+            uri,
             tls=True,
-            appName="Cluster0",
+            tlsAllowInvalidCertificates=True, # Added for maximum compatibility on Render
             uuidRepresentation="standard"
         )
     return client

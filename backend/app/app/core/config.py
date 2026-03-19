@@ -1,6 +1,7 @@
 from typing import List, Union, Optional
 from pydantic import AnyHttpUrl, EmailStr, validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+import os
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -11,15 +12,15 @@ class Settings(BaseSettings):
     SERVER_NAME: str = "PulseStack"
     SERVER_HOST: AnyHttpUrl = "https://pulse-stack.onrender.com"
     
-    # Raw MongoDB URI from environment
-    MONGO_DATABASE_URI: str = "mongodb://localhost:27017"
+    # Strictly from Environment
+    MONGO_DATABASE_URI: Optional[str] = None
     MONGO_DATABASE: str = "pulsestack_db"
-
-    SECRET_KEY: str = "b47fefafd0ec5d1c9faf3571832023f4"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
-    TOTP_SECRET_KEY: str = "87eb2e3130c0c66048d087b21e8e5d1c"
+    
+    SECRET_KEY: str = os.getenv("SECRET_KEY", "temporary_dev_key_change_in_prod")
+    TOTP_SECRET_KEY: str = os.getenv("TOTP_SECRET_KEY", "temporary_totp_key_change_in_prod")
     TOTP_ALGO: str = "sha256"
     
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
     USERS_OPEN_REGISTRATION: bool = True
     FIRST_SUPERUSER: EmailStr = "admin@pulsestack.com"
     FIRST_SUPERUSER_PASSWORD: str = "PulseStackAdmin123"
@@ -33,12 +34,5 @@ class Settings(BaseSettings):
         return v
 
     EMAILS_ENABLED: bool = False
-    SMTP_TLS: bool = True
-    SMTP_PORT: Optional[int] = None
-    SMTP_HOST: Optional[str] = None
-    SMTP_USER: Optional[str] = None
-    SMTP_PASSWORD: Optional[str] = None
-    EMAILS_FROM_EMAIL: Optional[EmailStr] = None
-    EMAILS_FROM_NAME: Optional[str] = None
 
 settings = Settings()
