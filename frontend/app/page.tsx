@@ -1,9 +1,7 @@
-import Navigation from './components/Navigation'
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-[#0f172a] text-white selection:bg-indigo-500/30">
-      <Navigation />
       
       {/* Hero Section */}
       <section className="relative pt-20 pb-12 overflow-hidden">
